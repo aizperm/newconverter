@@ -18,6 +18,8 @@ import java.util.Properties;
 import java.util.Stack;
 
 public class MainApp {
+    private static int inCount = 0;
+    private static int outCount = 0;
 
     public static void main(String[] args) throws IOException {
         Config localConfig = getConfig();
@@ -28,6 +30,7 @@ public class MainApp {
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                 Path filename = file.getFileName();
                 if (filename.toString().endsWith(".jpg")) {
+                    inCount++;
                     System.out.println("Finded file " + file);
                     Path relativePath = inPath.relativize(file);
                     Path newFile = outPath.resolve(relativePath);
@@ -46,43 +49,18 @@ public class MainApp {
                             count++;
                         }
                     }
-                    if (done)
+                    if (done) {
                         System.out.println("File completed '" + newFile + "'");
-                    else System.out.println("File not completed " + newFile + "'");
+                        outCount++;
+                    } else System.out.println("File not completed " + newFile + "'");
                 }
                 return FileVisitResult.CONTINUE;
             }
         });
+        if (inCount == outCount)
+            System.out.println("All files signed: " + outCount);
+        else System.out.println("WARNING! In files size: " + inCount + " but signed: " + outCount);
 
-        if (false) {
-            File outDir = new File(localConfig.getOutPath());
-            File inDir = new File(localConfig.getInputPath());
-
-
-            Stack<File> localStack = new Stack<>();
-            localStack.push(inDir);
-            while (!localStack.isEmpty()) {
-                File popFile = localStack.pop();
-                File[] listFiles;
-                if (popFile.isDirectory()) {
-                    listFiles = popFile.listFiles();
-                    for (File file : listFiles) {
-                        localStack.push(file);
-                    }
-                } else if (popFile.getName().endsWith(".jpg")) {
-                    File parentDir = popFile.getParentFile();
-
-                    File localFile4 = new File(outDir, "");
-                    localFile4.mkdirs();
-                    File localFile5 = new File(localFile4, popFile.getName());
-                    try {
-                        drawText(popFile.getAbsolutePath(), localFile5.getAbsolutePath());
-                    } catch (Throwable localThrowable) {
-                        System.err.println(localThrowable);
-                    }
-                }
-            }
-        }
     }
 
     private static Config getConfig() throws IOException {
