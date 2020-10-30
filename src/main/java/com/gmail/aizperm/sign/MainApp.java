@@ -93,6 +93,10 @@ public class MainApp {
             if (str5 != null) {
                 localConfig.setOutPath(str5);
             }
+            String glyphColor = localProperties.getProperty("glyphColor");
+            if (glyphColor != null) {
+                localConfig.setGlyphColor(glyphColor);
+            }
         }
         return localConfig;
     }
@@ -120,7 +124,7 @@ public class MainApp {
             graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
             BasicStroke localBasicStroke = new BasicStroke(1.0F);
-            graphics.setColor(Color.BLACK);
+            graphics.setColor(Color.decode(localConfig.getGlyphColor()));
             graphics.setStroke(localBasicStroke);
             graphics.translate(n - 10, i - 10);
             graphics.draw(shape);

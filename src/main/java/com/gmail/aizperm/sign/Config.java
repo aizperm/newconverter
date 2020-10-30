@@ -5,6 +5,7 @@ public class Config {
     boolean systemFont = true;
     String fontFamily = "Cambria Math";
     String color = "#00FF00";
+    String glyphColor = "#000000";
     String inputPath;
     String outPath;
 
@@ -54,5 +55,13 @@ public class Config {
 
     public void setColor(String paramString) {
         this.color = paramString;
+    }
+
+    public String getGlyphColor() {
+        return glyphColor;
+    }
+
+    public void setGlyphColor(String glyphColor) {
+        this.glyphColor = glyphColor;
     }
 }
